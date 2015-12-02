@@ -1,5 +1,229 @@
 package bt.domain;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class Trade {
 
+    static DateFormat dateFormatForFile = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+    
+    String islemNo;
+    Date islemTarihi;
+    String paraBirimi;
+    String zaman;
+    String b_emirNo;
+    String s_emirNo;
+    String menkulKiymet;
+    String pazar;
+    BigDecimal fiyat;
+    BigDecimal repo2Fiyati;
+    int miktar;
+    BigDecimal tlTutar;
+    int repoFaizi;
+    int stopaj;
+    Date valor1;
+    Date valor2;
+    BigDecimal getiri;
+    String repoSuresi;
+    BigDecimal temizFiyat;
+    int islemisFaiz;
+    BigDecimal islemisFaizTutari;
+    BigDecimal anaparaTutari;
+    BigDecimal takasFiyati;
+    BigDecimal kirliFiyat;
+    int enflasyonKatsayisi;
+    String kendineFon;
+    
+    public String getIslemNo() {
+        return islemNo;
+    }
+    public void setIslemNo(String islemNo) {
+        this.islemNo = islemNo;
+    }
+    public Date getIslemTarihi() {
+        return islemTarihi;
+    }
+    public void setIslemTarihi(Date islemTarihi) {
+        this.islemTarihi = islemTarihi;
+    }
+    public String getParaBirimi() {
+        return paraBirimi;
+    }
+    public void setParaBirimi(String paraBirimi) {
+        this.paraBirimi = paraBirimi;
+    }
+    public String getZaman() {
+        return zaman;
+    }
+    public void setZaman(String zaman) {
+        this.zaman = zaman;
+    }
+    public String getB_emirNo() {
+        return b_emirNo;
+    }
+    public void setB_emirNo(String b_emirNo) {
+        this.b_emirNo = b_emirNo;
+    }
+    public String getS_emirNo() {
+        return s_emirNo;
+    }
+    public void setS_emirNo(String s_emirNo) {
+        this.s_emirNo = s_emirNo;
+    }
+    public String getMenkulKiymet() {
+        return menkulKiymet;
+    }
+    public void setMenkulKiymet(String menkulKiymet) {
+        this.menkulKiymet = menkulKiymet;
+    }
+    public String getPazar() {
+        return pazar;
+    }
+    public void setPazar(String pazar) {
+        this.pazar = pazar;
+    }
+    public BigDecimal getFiyat() {
+        return fiyat;
+    }
+    public void setFiyat(BigDecimal fiyat) {
+        this.fiyat = fiyat;
+    }
+    public BigDecimal getRepo2Fiyati() {
+        return repo2Fiyati;
+    }
+    public void setRepo2Fiyati(BigDecimal repo2Fiyati) {
+        this.repo2Fiyati = repo2Fiyati;
+    }
+    public int getMiktar() {
+        return miktar;
+    }
+    public void setMiktar(int miktar) {
+        this.miktar = miktar;
+    }
+    public BigDecimal getTlTutar() {
+        return tlTutar;
+    }
+    public void setTlTutar(BigDecimal tlTutar) {
+        this.tlTutar = tlTutar;
+    }
+    public int getRepoFaizi() {
+        return repoFaizi;
+    }
+    public void setRepoFaizi(int repoFaizi) {
+        this.repoFaizi = repoFaizi;
+    }
+    public int getStopaj() {
+        return stopaj;
+    }
+    public void setStopaj(int stopaj) {
+        this.stopaj = stopaj;
+    }
+    public Date getValor1() {
+        return valor1;
+    }
+    public void setValor1(Date valor1) {
+        this.valor1 = valor1;
+    }
+    public Date getValor2() {
+        return valor2;
+    }
+    public void setValor2(Date valor2) {
+        this.valor2 = valor2;
+    }
+    public BigDecimal getGetiri() {
+        return getiri;
+    }
+    public void setGetiri(BigDecimal getiri) {
+        this.getiri = getiri;
+    }
+    public String getRepoSuresi() {
+        return repoSuresi;
+    }
+    public void setRepoSuresi(String repoSuresi) {
+        this.repoSuresi = repoSuresi;
+    }
+    public BigDecimal getTemizFiyat() {
+        return temizFiyat;
+    }
+    public void setTemizFiyat(BigDecimal temizFiyat) {
+        this.temizFiyat = temizFiyat;
+    }
+    public int getIslemisFaiz() {
+        return islemisFaiz;
+    }
+    public void setIslemisFaiz(int islemisFaiz) {
+        this.islemisFaiz = islemisFaiz;
+    }
+    public BigDecimal getIslemizFaizTutari() {
+        return islemisFaizTutari;
+    }
+    public void setIslemizFaizTutari(BigDecimal islemizFaizTutari) {
+        this.islemisFaizTutari = islemizFaizTutari;
+    }
+    public BigDecimal getAnaparaTutari() {
+        return anaparaTutari;
+    }
+    public void setAnaparaTutari(BigDecimal anaparaTutari) {
+        this.anaparaTutari = anaparaTutari;
+    }
+    public BigDecimal getTakasFiyati() {
+        return takasFiyati;
+    }
+    public void setTakasFiyati(BigDecimal takasFiyati) {
+        this.takasFiyati = takasFiyati;
+    }
+    public BigDecimal getKirliFiyat() {
+        return kirliFiyat;
+    }
+    public void setKirliFiyat(BigDecimal kirliFiyat) {
+        this.kirliFiyat = kirliFiyat;
+    }
+    public int getEnflasyonKatsayisi() {
+        return enflasyonKatsayisi;
+    }
+    public void setEnflasyonKatsayisi(int enflasyonKatsayisi) {
+        this.enflasyonKatsayisi = enflasyonKatsayisi;
+    }
+    public String getKendineFon() {
+        return kendineFon;
+    }
+    public void setKendineFon(String kendineFon) {
+        this.kendineFon = kendineFon;
+    }
+
+    public String toStringCSV(){
+        
+        String tradeString="";
+        tradeString+=islemNo+";";
+        tradeString+=dateFormatForFile.format(islemTarihi)+";";
+        tradeString+= paraBirimi+";";
+        tradeString+=zaman+";";
+        tradeString+=b_emirNo+";";
+        tradeString+=s_emirNo+";";
+        tradeString+=menkulKiymet+";";
+        tradeString+=pazar+";";
+        tradeString+=fiyat+";";
+        tradeString+=repo2Fiyati+";";
+        tradeString+=miktar+";";
+        tradeString+=tlTutar+";";
+        tradeString+=repoFaizi+";";
+        tradeString+=stopaj+";";
+        tradeString+= dateFormatForFile.format(valor1)+";";
+        tradeString+= valor2+";";
+        tradeString+= getiri+";";
+        tradeString+= repoSuresi+";";
+        tradeString+= temizFiyat+";";
+        tradeString+=islemisFaiz+";";
+        tradeString+=islemisFaizTutari+";";
+        tradeString+=anaparaTutari+";";
+        tradeString+= takasFiyati+";";
+        tradeString+= kirliFiyat+";";
+        tradeString+= enflasyonKatsayisi+";";
+        tradeString+= kendineFon+";";
+        
+        return tradeString;
+}
 }

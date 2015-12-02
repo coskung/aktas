@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 
 import bt.domain.Order;
+import bt.domain.Trade;
 
 public class WriteFile {
 
@@ -22,5 +23,21 @@ public class WriteFile {
               System.err.println("Error: " + e.getMessage());
     }
 	}
+
+    public static void writeCSVfileTradeDaily(ArrayList<Trade> tradeListOneDay, String fileName) {
+        try{
+            // Create file 
+            FileWriter fstream = new FileWriter(fileName);
+            BufferedWriter out = new BufferedWriter(fstream);
+            //emirList.remove(0);
+            for (Trade t : tradeListOneDay) {
+                out.write(t.toStringCSV() + "\n");
+            }
+            out.close();
+            }catch (Exception e){//Catch exception if any
+              System.err.println("Error: " + e.getMessage());
+    }
+        
+    }
 	
 }
