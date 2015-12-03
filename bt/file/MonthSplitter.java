@@ -8,12 +8,15 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import bt.domain.Order;
 import bt.domain.Trade;
+import bt.utils.DateComparator;
+import bt.utils.TimeComparatorForIslem;
 
 
 
@@ -37,12 +40,12 @@ public class MonthSplitter {
 
         readOrderMonthCSVFile(emirFile);
         
-        //System.out.println(orderListFullMonth.size());
         readTradeMonthCSVFile(islemFile);
-        //TimeComparator dateComparator = new TimeComparator();
-        //TimeComparatorForIslem comparatorForIslem = new TimeComparatorForIslem();
-        //Collections.sort(emirList, dateComparator);
-        //Collections.sort(islemList, comparatorForIslem);
+
+        DateComparator dateComparator = new DateComparator();
+        TimeComparatorForIslem comparatorForIslem = new TimeComparatorForIslem();
+        Collections.sort(orderListFullMonth, dateComparator);
+        //Collections.sort(tradeListFullMonth, comparatorForIslem);  //bunu acinca dosya uretiminda fazlaliklar oluyor kontrol etmeyi unutma 3 Aralik notu
 
         //once her bir menkul kiymet icin bir aylik liste olustur:
         for (String menkulKiymet : menkulKiymetListesi) {
@@ -280,7 +283,7 @@ public class MonthSplitter {
         while(singleList.size()>0){
             splitEmirlist(i,singleList);
             i++;
-    } 
+        } 
     }
     
     private static void splitTradesToMenkulKiymetList(String menkulKiymet) throws Exception {
