@@ -29,12 +29,12 @@ public class Trade {
     BigDecimal getiri;
     String repoSuresi;
     BigDecimal temizFiyat;
-    int islemisFaiz;
+    BigDecimal islemisFaiz;
     BigDecimal islemisFaizTutari;
     BigDecimal anaparaTutari;
     BigDecimal takasFiyati;
     BigDecimal kirliFiyat;
-    int enflasyonKatsayisi;
+    BigDecimal enflasyonKatsayisi;
     String kendineFon;
     
     public String getIslemNo() {
@@ -151,17 +151,17 @@ public class Trade {
     public void setTemizFiyat(BigDecimal temizFiyat) {
         this.temizFiyat = temizFiyat;
     }
-    public int getIslemisFaiz() {
+    public BigDecimal getIslemisFaiz() {
         return islemisFaiz;
     }
-    public void setIslemisFaiz(int islemisFaiz) {
+    public void setIslemisFaiz(BigDecimal islemisFaiz) {
         this.islemisFaiz = islemisFaiz;
     }
-    public BigDecimal getIslemizFaizTutari() {
+    public BigDecimal getIslemisFaizTutari() {
         return islemisFaizTutari;
     }
-    public void setIslemizFaizTutari(BigDecimal islemizFaizTutari) {
-        this.islemisFaizTutari = islemizFaizTutari;
+    public void setIslemisFaizTutari(BigDecimal islemisFaizTutari) {
+        this.islemisFaizTutari = islemisFaizTutari;
     }
     public BigDecimal getAnaparaTutari() {
         return anaparaTutari;
@@ -181,10 +181,10 @@ public class Trade {
     public void setKirliFiyat(BigDecimal kirliFiyat) {
         this.kirliFiyat = kirliFiyat;
     }
-    public int getEnflasyonKatsayisi() {
+    public BigDecimal getEnflasyonKatsayisi() {
         return enflasyonKatsayisi;
     }
-    public void setEnflasyonKatsayisi(int enflasyonKatsayisi) {
+    public void setEnflasyonKatsayisi(BigDecimal enflasyonKatsayisi) {
         this.enflasyonKatsayisi = enflasyonKatsayisi;
     }
     public String getKendineFon() {

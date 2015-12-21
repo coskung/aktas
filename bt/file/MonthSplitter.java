@@ -35,8 +35,8 @@ public class MonthSplitter {
      */
     public static void main(String[] args) throws Exception {
         //int i = 1;
-        String emirFile = "orders_1999_KES_8.csv";
-        String islemFile = "trades_1999_KES_8.csv";
+        String emirFile = "orders_2013_REPO_3.csv";
+        String islemFile = "trades_2013_REPO_3.csv";
 
         readOrderMonthCSVFile(emirFile);
         
@@ -202,15 +202,18 @@ public class MonthSplitter {
                 t.setTemizFiyat(temizFiyat);
                 
                 tmp = parser.nextToken();
-                int islemisFaiz = Integer.parseInt(tmp);
-                t.setIslemisFaiz(islemisFaiz);
+                if(tmp!=null && !tmp.isEmpty()){
+                    BigDecimal islemisFaiz = new BigDecimal(tmp);
+                    t.setIslemisFaiz(islemisFaiz);
+                }else
+                    t.setIslemisFaiz(null);
                 
                 tmp = parser.nextToken();
                 if(tmp!=null && !tmp.isEmpty()){
                     BigDecimal islemisFaizTutari = new BigDecimal(tmp);
-                    t.setIslemizFaizTutari(islemisFaizTutari);
+                    t.setIslemisFaizTutari(islemisFaizTutari);
                 }else
-                    t.setIslemizFaizTutari(null);
+                    t.setIslemisFaizTutari(null);
                 
                 tmp = parser.nextToken();
                 if(tmp!=null && !tmp.isEmpty()){
@@ -234,8 +237,11 @@ public class MonthSplitter {
                     t.setKirliFiyat(null);
                 
                 tmp = parser.nextToken();
-                int enflasyonKatsayisi = Integer.parseInt(tmp);
-                t.setEnflasyonKatsayisi(enflasyonKatsayisi);
+                if(tmp!=null && !tmp.isEmpty()){
+                    BigDecimal enflasyonKatsayisi = new BigDecimal(tmp);
+                    t.setEnflasyonKatsayisi(enflasyonKatsayisi);
+                }else
+                    t.setEnflasyonKatsayisi(null);
                 
                 tmp = parser.nextToken();
                 t.setKendineFon(tmp);
