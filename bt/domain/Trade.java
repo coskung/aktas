@@ -206,7 +206,7 @@ public class Trade {
         tradeString+=menkulKiymet+";";
         tradeString+=pazar+";";
         tradeString+=fiyat+";";
-        tradeString+=repo2Fiyati+";";
+        tradeString+=checkNull(repo2Fiyati)+";";
         tradeString+=miktar+";";
         tradeString+=tlTutar+";";
         tradeString+=repoFaizi+";";
@@ -226,4 +226,9 @@ public class Trade {
         
         return tradeString;
 }
+    public String checkNull(BigDecimal b) {
+        if(b==null)
+            return "";
+        return b.toString();
+    }
 }

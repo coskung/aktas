@@ -2,6 +2,7 @@ package bt.domain;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -9,7 +10,7 @@ import java.util.Locale;
 public class Order {
 
     static DateFormat dateFormatForFile = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
-
+    static DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.ENGLISH);
     
     String emirNumarasi;
     Date emirTarihi;
@@ -193,5 +194,13 @@ public class Order {
         orderString+= takasFiyati+";";
         return orderString;
 }
+    public Date getTime(){
+        try {
+            return dateFormat.parse(this.getEmirTarihi() + " " + this.getGirisSaati());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     
 }

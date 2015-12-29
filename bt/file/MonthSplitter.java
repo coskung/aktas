@@ -35,8 +35,8 @@ public class MonthSplitter {
      */
     public static void main(String[] args) throws Exception {
         //int i = 1;
-        String emirFile = "orders_2013_REPO_3.csv";
-        String islemFile = "trades_2013_REPO_3.csv";
+        String emirFile = "orders_1999_KES_8.csv";
+        String islemFile = "trades_1999_KES_8.csv";
 
         readOrderMonthCSVFile(emirFile);
         
