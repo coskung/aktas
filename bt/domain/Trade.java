@@ -2,6 +2,7 @@ package bt.domain;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -9,6 +10,8 @@ import java.util.Locale;
 public class Trade {
 
     static DateFormat dateFormatForFile = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+    static DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.ENGLISH);
+
     
     String islemNo;
     Date islemTarihi;
@@ -36,6 +39,7 @@ public class Trade {
     BigDecimal kirliFiyat;
     BigDecimal enflasyonKatsayisi;
     String kendineFon;
+    Boolean isProcessed;
     
     public String getIslemNo() {
         return islemNo;
@@ -194,6 +198,12 @@ public class Trade {
         this.kendineFon = kendineFon;
     }
 
+    public Boolean getIsProcessed() {
+        return isProcessed;
+    }
+    public void setProcessed(Boolean isProcessed) {
+        this.isProcessed = isProcessed;
+    }
     public String toStringCSV(){
         
         String tradeString="";
@@ -230,5 +240,14 @@ public class Trade {
         if(b==null)
             return "";
         return b.toString();
+    }
+    
+    public Date getTime(){
+        try {
+            return dateFormat.parse(this.getIslemTarihi()+ " " + this.getZaman());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
