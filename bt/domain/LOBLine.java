@@ -203,7 +203,7 @@ public class LOBLine {
 	public String toString2() {
 		String lobLineString="";
 		//lobLineString+=index+";";
-		lobLineString+=e.toString();
+		lobLineString+=e.toStringCSV();
 		lobLineString+=bid+";";
 		lobLineString+=ask+";";
 		lobLineString+=formatDisplay(spread,3)+";";
@@ -220,7 +220,7 @@ public class LOBLine {
 	public String toStringDynamic() {
         String lobLineString="";
         //lobLineString+=index+";";
-        lobLineString+=e.toString();
+        lobLineString+=e.toStringCSV();
         lobLineString+=bid+";";
         lobLineString+=ask+";";
         lobLineString+=formatDisplay(spread,3)+";";

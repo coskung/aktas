@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -11,6 +12,7 @@ public class Order {
 
     static DateFormat dateFormatForFile = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
     static DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.ENGLISH);
+    static DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss.SSS", Locale.ENGLISH);
     
     String emirNumarasi;
     Date emirTarihi;
@@ -177,30 +179,46 @@ public class Order {
         orderString+=pazar+";";
         orderString+=alis_satis+";";
         orderString+=fiyat+";";
-        orderString+=repo2Fiyati+";";
+        orderString+=isNull(repo2Fiyati)+";";
         orderString+=miktar+";";
         orderString+=bakiye+";";
         orderString+=durum+";";
         orderString+=sonDegistirmeSaati+";";
         orderString+=ilgiliEmirNumarasi+";";
         orderString+= dateFormatForFile.format(valor1)+";";
-        orderString+= valor2+";";
+        orderString+= isNull(valor2)+";";
         orderString+= getiri+";";
         orderString+= paraBirimi+";";
         orderString+= repo+";";
         orderString+= hesabi+";";
         orderString+= tlTutar+";";
         orderString+= temizFiyat+";";
-        orderString+= takasFiyati+";";
+        orderString+= isNull(takasFiyati)+";";
         return orderString;
 }
     public Date getTime(){
-        try {
-            return dateFormat.parse(this.getEmirTarihi() + " " + this.getGirisSaati());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+        //try {
+            Calendar tmp = Calendar.getInstance();
+            tmp.setTime(this.getEmirTarihi());
+            tmp.set(Calendar.HOUR, Integer.parseInt(this.getGirisSaati().substring(0,2)));
+            tmp.set(Calendar.MINUTE, Integer.parseInt(this.getGirisSaati().substring(2,4)));
+            tmp.set(Calendar.SECOND, Integer.parseInt(this.getGirisSaati().substring(4,6)));
+            tmp.set(Calendar.MILLISECOND, Integer.parseInt(this.getGirisSaati().substring(6,9)));
+            return tmp.getTime();
+            //return dateFormat.parse(this.getEmirTarihi() + " " + this.getGirisSaati());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+    }
+    public String isNull(Object s){
+        if(s==null)
+            return "";
+//        else if(s.compareTo("null")==0)
+//            return "";
+//        else if(s.length()==0)
+//            return "";
+        else return s.toString();
     }
     
 }

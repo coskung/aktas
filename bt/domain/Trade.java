@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -222,7 +223,7 @@ public class Trade {
         tradeString+=repoFaizi+";";
         tradeString+=stopaj+";";
         tradeString+= dateFormatForFile.format(valor1)+";";
-        tradeString+= valor2+";";
+        tradeString+= isNull(valor2)+";";
         tradeString+= getiri+";";
         tradeString+= repoSuresi+";";
         tradeString+= temizFiyat+";";
@@ -243,11 +244,29 @@ public class Trade {
     }
     
     public Date getTime(){
-        try {
-            return dateFormat.parse(this.getIslemTarihi()+ " " + this.getZaman());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+        
+        Calendar tmp = Calendar.getInstance();
+        tmp.setTime(this.getIslemTarihi());
+        tmp.set(Calendar.HOUR, Integer.parseInt(this.getZaman().substring(0,2)));
+        tmp.set(Calendar.MINUTE, Integer.parseInt(this.getZaman().substring(3,5)));
+        tmp.set(Calendar.SECOND, Integer.parseInt(this.getZaman().substring(6,8)));
+        return tmp.getTime();
+        
+//        try {
+//            return dateFormat.parse(this.getIslemTarihi()+ " " + this.getZaman());
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+    }
+    
+    public String isNull(Object s){
+        if(s==null)
+            return "";
+//        else if(s.compareTo("null")==0)
+//            return "";
+//        else if(s.length()==0)
+//            return "";
+        else return s.toString();
     }
 }

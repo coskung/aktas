@@ -45,6 +45,7 @@ public class AktasSimulator {
     static List<String> OrderlistModifiedamaaslindaLOBlistesiCumulative = new ArrayList<String> ();
     static List<String> XWorYW = new ArrayList<String> ();
     static DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yy HH:mm:ss", Locale.ENGLISH);
+    static DateFormat emirDateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
     static DateFormat dailyDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.ENGLISH);
     static int DYNAMIC_LOB_COUNTER=2;
     //static int TARGET=19802;
@@ -63,6 +64,7 @@ public class AktasSimulator {
     
     static String seans="09:30:00";
     static String ilkseanssonu="12:00:00";
+    static String ilkseanssonuPlainString="120000";
     static int CROSS_ORDER_INDICATOR=3000;
     
 
@@ -99,6 +101,7 @@ public class AktasSimulator {
         bt.utils.Parse parser = new bt.utils.Parse(line, ";");
 
         if (line != null) {
+            //System.out.println("line:"+line);
             String tmp = parser.nextToken();
             while (tmp != null) {
                 e.setEmirNumarasi(tmp);
@@ -106,7 +109,7 @@ public class AktasSimulator {
                 tmp = parser.nextToken();
                 Date emirTarihi = null;
                 try {
-                    emirTarihi = dateFormat.parse(tmp);
+                    emirTarihi = emirDateFormat.parse(tmp);
                     e.setEmirTarihi(emirTarihi);
                 } catch (ParseException e1) {
                     e1.printStackTrace();
@@ -129,7 +132,7 @@ public class AktasSimulator {
                 e.setFiyat(fiyat);
                 
                 tmp = parser.nextToken();
-                if(!tmp.isEmpty()){
+                if(tmp!=null && !tmp.isEmpty()){
                     BigDecimal repo2Fiyati = new BigDecimal(tmp);
                     e.setRepo2Fiyati(repo2Fiyati);
                     }
@@ -156,8 +159,8 @@ public class AktasSimulator {
                 tmp = parser.nextToken();
                 Date valor1 = null;
                 try {
-                    if(!tmp.isEmpty())
-                        valor1 = dateFormat.parse(tmp);
+                    if(tmp!=null && !tmp.isEmpty())
+                        valor1 = emirDateFormat.parse(tmp);
                     e.setValor1(valor1);
                 } catch (ParseException e1) {
                     e1.printStackTrace();
@@ -166,7 +169,7 @@ public class AktasSimulator {
                 tmp = parser.nextToken();
                 Date valor2 = null;
                 try {
-                    if(!tmp.isEmpty())
+                    if(tmp!=null && !tmp.isEmpty())
                         valor2 = dateFormat.parse(tmp);
                     e.setValor2(valor2);
                 } catch (ParseException e1) {
@@ -205,6 +208,7 @@ public class AktasSimulator {
                     e.setTakasFiyati(null);
                 
                 tmp = parser.nextToken();
+                tmp = parser.nextToken();
             }
         }
         return e;
@@ -213,7 +217,8 @@ public class AktasSimulator {
     public static Trade convertLineToTrade(String line) {
         
         Trade t = new Trade();
-        bt.utils.Parse parser = new bt.utils.Parse(line, ";");        
+        bt.utils.Parse parser = new bt.utils.Parse(line, ";");       
+        t.setProcessed(false);
         
         if (line != null) {
             //System.out.println("line:"+line);
@@ -229,7 +234,7 @@ public class AktasSimulator {
                 //System.out.println(tmp);
                 Date islemTarihi = null;
                 try {
-                    islemTarihi = dateFormat.parse(tmp);
+                    islemTarihi = emirDateFormat.parse(tmp);
                     t.setIslemTarihi(islemTarihi);
                 } catch (ParseException e1) {
                     e1.printStackTrace();
@@ -285,7 +290,7 @@ public class AktasSimulator {
                 Date valor1 = null;
                 try {
                     if(!tmp.isEmpty())
-                        valor1 = dateFormat.parse(tmp);
+                        valor1 = emirDateFormat.parse(tmp);
                     t.setValor1(valor1);
                 } catch (ParseException e1) {
                     e1.printStackTrace();
@@ -294,8 +299,8 @@ public class AktasSimulator {
                 tmp = parser.nextToken();
                 Date valor2 = null;
                 try {
-                    if(!tmp.isEmpty())
-                        valor2 = dateFormat.parse(tmp);
+                    if(tmp!=null && !tmp.isEmpty())
+                        valor2 = emirDateFormat.parse(tmp);
                     t.setValor2(valor2);
                 } catch (ParseException e1) {
                     e1.printStackTrace();
@@ -361,6 +366,7 @@ public class AktasSimulator {
                 t.setKendineFon(tmp);
                 
                 tmp = parser.nextToken();
+                tmp = parser.nextToken();
             }
         }
         return t; 
@@ -424,7 +430,7 @@ public class AktasSimulator {
             interruptTimeString = PropertyLoader.getProperty("timetostop");
             if (!interruptTimeString.equalsIgnoreCase(""))
                 interruptTime = dailyDateFormat.parse(interruptTimeString);
-            System.out.println(interruptTime);
+            System.out.println("interruptTime"+interruptTime);
             
             //TODO 29.12.15 alttaki satir acilmadan olmaz 
             initCreateLOB();
@@ -1258,6 +1264,7 @@ public class AktasSimulator {
         OrderlistModifiedamaaslindaLOBlistesi.add(line1.toString2());
         boolean morning = true;
         boolean morningFlagForDynamicLob = true;
+        System.out.println("orderlist size:"+OrderList.size());
         for (int i = 1; i < OrderList.size(); i++) {        	
             Order order= OrderList.get(i);
             if (DYNAMIC_LOB_COUNTER != -1) {
@@ -1265,8 +1272,9 @@ public class AktasSimulator {
 //                    fixDynamicLOBAfterLunch(i - 1);//i-1 cunku ogleden sonraki ilk Order az once alinmisti arada i artti. geri donmek lazim
 //                    morningFlagForDynamicLob = false;
 //                }
-
+                System.out.println(order.getTime());
                 if (order.getTime().after(OrderList.get(i - 1).getTime())) {
+                //if (orderTimeComparator(order, OrderList.get(i - 1))) {
                     int dif = (int) (order.getTime().getTime() - OrderList.get(i - 1).getTime().getTime()) / 1000;
                     for (int k = 0; k < dif && dif < 3000; k++) {
                         LOBLine line = lobList.get(lobList.size() - 1);
@@ -1316,7 +1324,8 @@ public class AktasSimulator {
             }
             
             
-            if (morning && order.getTime().after(dateFormat.parse(order.getEmirTarihi()+ " "+ilkseanssonu))) {
+            //if (morning && order.getTime().after(dateFormat.parse(order.getEmirTarihi()+ " "+ilkseanssonu))) {
+            if (morning && (order.getGirisSaati().compareTo(ilkseanssonuPlainString)>0)) {
                 System.out.println("\n\n SABAH BITTI clearValidOnlyMorning oncesi lob:\n\n");
                 printFullLineListLobLine(lobList);
                 lobListOfMorning.addAll(lobList);
@@ -1656,12 +1665,14 @@ public class AktasSimulator {
         for (int i = 0; i < TradeList.size(); i++) {
             Trade Trade = TradeList.get(i);
             try {
-                if (Trade.getTime().before(dateFormat.parse(Trade.getIslemTarihi() + " " + seans))
-                        && !TradeList.get(i + 1).getTime().before((dateFormat.parse(Trade.getIslemTarihi() + " " + seans)))) {
+                //if (Trade.getTime().before(dateFormat.parse(Trade.getIslemTarihi() + " " + seans))
+               //        && !TradeList.get(i + 1).getTime().before((dateFormat.parse(Trade.getIslemTarihi() + " " + seans)))) {
+                if ((Trade.getZaman().compareTo(seans)<0)
+                        && !(TradeList.get(i + 1).getZaman().compareTo(seans)<0)) {
                     marketPrice = Trade.getFiyat();
                     i = TradeList.size();
                 }
-            } catch (ParseException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -2768,4 +2779,17 @@ public class AktasSimulator {
 //         	dynamicLobString.add(lineFromLOB.toStringDynamic());
 //         }	
 // 	}
+     
+     public static boolean orderTimeComparator (Order order1, Order order2){
+         if(order1.getEmirTarihi().before(order2.getEmirTarihi()))
+             return true;
+         else if(order1.getEmirTarihi().after(order2.getEmirTarihi()))
+             return false;
+         else{
+             if(order1.getGirisSaati().compareTo(order2.getGirisSaati())<1)
+                 return true;
+             else
+                 return false;
+         }
+     } 
 }
