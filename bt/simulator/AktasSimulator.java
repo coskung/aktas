@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
@@ -2694,18 +2695,25 @@ public class AktasSimulator {
      	String morningTimeString="";
      	morningTimeString = ilkseanssonu;
      	
-     	Date morningTime = null;
- 		try {
- 			morningTime = dailyDateFormat.parse(morningTimeString);
- 		} catch (ParseException e) {
- 			e.printStackTrace();
- 		}
- 		try {
- 			morningTime=dateFormat.parse(Order.getEmirTarihi() + " " + dailyDateFormat.format(morningTime));
- 		} catch (ParseException e) {
- 			e.printStackTrace();
- 		}
-         int dif=(int)(morningTime.getTime()-Order.getTime().getTime())/1000;
+//     	Date morningTime = null;
+// 		try {
+// 			morningTime = dailyDateFormat.parse(morningTimeString);
+// 		} catch (ParseException e) {
+// 			e.printStackTrace();
+// 		}
+// 		try {
+// 			morningTime=dateFormat.parse(Order.getEmirTarihi() + " " + dailyDateFormat.format(morningTime));
+// 		} catch (ParseException e) {
+// 			e.printStackTrace();
+// 		}
+ 		
+ 	Calendar morningTime = Calendar.getInstance();
+ 	morningTime.setTime(Order.getEmirTarihi());
+ 	morningTime.set(Calendar.HOUR, Integer.parseInt(morningTimeString.substring(0,2)));
+ 	morningTime.set(Calendar.MINUTE, Integer.parseInt(morningTimeString.substring(3,5)));
+ 	morningTime.set(Calendar.SECOND, Integer.parseInt(morningTimeString.substring(6,8)));	
+ 	
+         int dif=(int)(morningTime.getTimeInMillis()-Order.getTime().getTime())/1000;
          System.out.println("fixDynamicLOBEndOfMorning, ogleden once icin fark:"+dif);
          //System.out.println(Order.getTime());
          //System.out.println(Order.getTime().getTime());

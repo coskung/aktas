@@ -186,7 +186,7 @@ public class LOBLine {
     public String toString(){
 		String lobLineString="";
 		//lobLineString+=index+";";
-		lobLineString+=e.toString();
+		lobLineString+=e.toStringCSV();
 		lobLineString+=bid+";";
 		lobLineString+=ask+";";
 		lobLineString+=formatDisplay(spread,3)+";";
