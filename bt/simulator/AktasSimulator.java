@@ -1248,7 +1248,7 @@ public class AktasSimulator {
         Order ilkOrder = OrderList.get(0);
         LOBLine line1 = null;
         System.out.println("initCreateLOB");
-        if ("A".equalsIgnoreCase(ilkOrder.getAlis_satis())) {
+        if ("B".equalsIgnoreCase(ilkOrder.getAlis_satis())) {
             bidPrice = ilkOrder.getFiyat();
             volumeAtBid = ilkOrder.getMiktar();
             askPrice = new BigDecimal(100);  //TODO check this
@@ -1265,7 +1265,7 @@ public class AktasSimulator {
         OrderlistModifiedamaaslindaLOBlistesi.add(line1.toString2());
         boolean morning = true;
         boolean morningFlagForDynamicLob = true;
-        System.out.println("orderlist size:"+OrderList.size());
+        //System.out.println("orderlist size:"+OrderList.size());
         for (int i = 1; i < OrderList.size(); i++) {        	
             Order order= OrderList.get(i);
             if (DYNAMIC_LOB_COUNTER != -1) {
@@ -1273,7 +1273,7 @@ public class AktasSimulator {
 //                    fixDynamicLOBAfterLunch(i - 1);//i-1 cunku ogleden sonraki ilk Order az once alinmisti arada i artti. geri donmek lazim
 //                    morningFlagForDynamicLob = false;
 //                }
-                System.out.println(order.getTime());
+                //System.out.println(order.getTime());
                 if (order.getTime().after(OrderList.get(i - 1).getTime())) {
                 //if (orderTimeComparator(order, OrderList.get(i - 1))) {
                     int dif = (int) (order.getTime().getTime() - OrderList.get(i - 1).getTime().getTime()) / 1000;
@@ -1340,7 +1340,7 @@ public class AktasSimulator {
             
 
             LOBLine line;
-            if ("A".equalsIgnoreCase(order.getAlis_satis())
+            if ("B".equalsIgnoreCase(order.getAlis_satis())
                     ) { //case 1 and case 3
                 //if(bidPrice==null || bidPrice.compareTo(BigDecimal.ZERO)==0)//ilk ALIS emri bu if'e girecek. 
                 //    bidPrice=Order.getPrice();
@@ -1709,7 +1709,7 @@ public class AktasSimulator {
         for (LOBLine line : lobList) {
             //if(Order.getTime().getTime()-line.getE().getTime().getTime()==1000)
             Order e = line.getE();
-            if(line.getE().getTime().before(Order.getTime()) && "A".equalsIgnoreCase(e.getAlis_satis()))
+            if(line.getE().getTime().before(Order.getTime()) && "B".equalsIgnoreCase(e.getAlis_satis()))
                 count++;
         }
         return count;
@@ -2069,7 +2069,7 @@ public class AktasSimulator {
         System.out.println("checkIfUnprocessedLineExistAtEndOfLOBCreation");
         int i = TradeList.size() - 1;
 
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < i; j++) {
             if (TradeList.get(i - j).getIsProcessed() == false) {
                 updateUnprocessedTrade(TradeList.get(i - j).getB_emirNo(), "buy", TradeList.get(i - j));
                 updateUnprocessedTrade(TradeList.get(i - j).getS_emirNo(), "sell", TradeList.get(i - j));
@@ -2251,7 +2251,7 @@ public class AktasSimulator {
         if (start == 0) {
             Order ilkOrder = lobList.get(0).getE();
             LOBLine line1 = null;
-            if ("A".equalsIgnoreCase(ilkOrder.getAlis_satis())) {
+            if ("B".equalsIgnoreCase(ilkOrder.getAlis_satis())) {
                 bidPrice = ilkOrder.getFiyat();
                 volumeAtBid = ilkOrder.getBakiye();
                 askPrice = new BigDecimal(10000000);
@@ -2277,7 +2277,7 @@ public class AktasSimulator {
             LOBLine line = lobList.get(i);
             Order Order = line.getE();
             String aggressiveness = line.getAggressive();
-            if ("A".equalsIgnoreCase(Order.getAlis_satis())){
+            if ("B".equalsIgnoreCase(Order.getAlis_satis())){
 
                 if (Order.getFiyat().compareTo(bidPrice) < 0) { //case 1.1
                     line = new LOBLine(Order, askPrice, bidPrice, volumeAtAsk, volumeAtBid, i, aggressiveness);
@@ -2583,7 +2583,7 @@ public class AktasSimulator {
              Order e = lobList.get(i).getE();
              if (!e.getTime().after(currentTime)) {
 
-                 if ("A".equalsIgnoreCase(e.getAlis_satis())){
+                 if ("B".equalsIgnoreCase(e.getAlis_satis())){
                      if (htBuy.containsKey(e.getFiyat())) {
                          htBuy.put(e.getFiyat(), htBuy.get(e.getFiyat()) + e.getBakiye());
                      } else {
