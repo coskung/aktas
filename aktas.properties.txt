@@ -9,3 +9,5 @@ lastorder=
 emir.1=TRT230800T13-02-Aug-99_emir.csv
 islem.1=TRT230800T13-02-Aug-99_islem.csv
 
+#emir.1=orders_2008_KES_5.csv
+#islem.1=trades_2008_KES_5.csv

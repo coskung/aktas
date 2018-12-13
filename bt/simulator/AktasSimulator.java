@@ -28,6 +28,7 @@ import bt.utils.PropertyLoader;
 public class AktasSimulator {
     static ArrayList<Order> OrderList = new ArrayList<Order>();
     static ArrayList<Order> OrderListCumulative = new ArrayList<Order>();
+    static ArrayList<Order> OrderListToDelete = new ArrayList<Order>();
     static ArrayList<Order> WYZListCumulative = new ArrayList<Order>();
     static ArrayList<Order> acilisListCumulative = new ArrayList<Order>();
     static ArrayList<Order> crossOrderList = new ArrayList<Order>();
@@ -402,9 +403,9 @@ public class AktasSimulator {
 //            deleteWLinesAfter17();
 //            deleteWLinesBetween1230and14();
 //            deleteWifKTRisE();
-//            filterXWorYW();
-//            int countW = countWLines();
-//            System.out.println("W lines left:" + countW);
+              filterWordersforQuantityEqualsBalance();
+              int countW = countWLines();
+              System.out.println("W lines left:" + countW);
 //            filterXY();
 //            filterModifiedOrders();
 //            filterKTR();
@@ -433,7 +434,6 @@ public class AktasSimulator {
                 interruptTime = dailyDateFormat.parse(interruptTimeString);
             System.out.println("interruptTime"+interruptTime);
             
-            //TODO 29.12.15 alttaki satir acilmadan olmaz 
             initCreateLOB();
             
             //29.12.15 alttaki kisimlarda (if blogu) simdilik commentlendi, ihtiyaca gore degerlendirilecek
@@ -457,7 +457,7 @@ public class AktasSimulator {
             
             WriteFile.writeCSVfileString(OrderlistModifiedamaaslindaLOBlistesi, "modified_order.csv");
             OrderlistModifiedamaaslindaLOBlistesiCumulative.addAll(OrderlistModifiedamaaslindaLOBlistesi);
-            WriteFile.writeCSVfileString(XWorYW, "XWorYW.csv");
+            //WriteFile.writeCSVfileString(XWorYW, "XWorYW.csv");
             OrderlistModifiedamaaslindaLOBlistesi.clear();
             lobList.clear();
             lobListOfMorning.clear();
@@ -1095,16 +1095,27 @@ public class AktasSimulator {
 //        return 1;
 //    }
 
-//    public static int countWLines() throws ParseException {
-//        int count = 0;
-//        for (int i = 0; i < OrderList.size(); i++) {
-//            Order Order = OrderList.get(i);
-//            if ((Order.getDurum()).equalsIgnoreCase("W")) {
-//                count++;
-//            }
-//        }
-//        return count;
-//    }
+    public static int countWLines() throws ParseException {
+        int count = 0;
+        for (int i = 0; i < OrderList.size(); i++) {
+            Order Order = OrderList.get(i);
+            if ((Order.getDurum()).equalsIgnoreCase("W")) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public static void filterWordersforQuantityEqualsBalance() throws Exception {
+        for (int i = 0; i < OrderList.size(); i++) {
+            Order Order = OrderList.get(i);
+            if ((Order.getDurum()).equalsIgnoreCase("W") && Order.getBakiye()==Order.getMiktar()) {
+            	OrderListToDelete.add(Order);
+            }
+        }
+        WriteFile.writeCSVfileEmirDaily(OrderListToDelete, "deleted_W_orders.csv");
+        OrderList.removeAll(OrderListToDelete);
+    }
 
 //    public static int findSmaller(int v1, int v2) {
 //        if (v1 > v2)
