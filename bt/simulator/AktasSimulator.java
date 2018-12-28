@@ -403,7 +403,8 @@ public class AktasSimulator {
 //            deleteWLinesAfter17();
 //            deleteWLinesBetween1230and14();
 //            deleteWifKTRisE();
-              filterWordersforQuantityEqualsBalance();
+              filterWordersforGirisSaatiBuyukturSonDegistirmeSaatiAndQuantityEqualsBalance();
+              //filterWordersforQuantityEqualsBalance();
               int countW = countWLines();
               System.out.println("W lines left:" + countW);
 //            filterXY();
@@ -1106,6 +1107,18 @@ public class AktasSimulator {
         return count;
     }
     
+    public static void filterWordersforGirisSaatiBuyukturSonDegistirmeSaatiAndQuantityEqualsBalance() throws Exception {
+        for (int i = 0; i < OrderList.size(); i++) {
+            Order Order = OrderList.get(i);
+            if ((Order.getDurum()).equalsIgnoreCase("W") && Order.getBakiye()==Order.getMiktar()
+            		&& Order.getGirisSaati().compareTo(Order.getSonDegistirmeSaati())>=0) {
+            	OrderListToDelete.add(Order);
+            }
+        }
+        WriteFile.writeCSVfileEmirDaily(OrderListToDelete, "deleted_W_orders.csv");
+        OrderList.removeAll(OrderListToDelete);
+    }
+    
     public static void filterWordersforQuantityEqualsBalance() throws Exception {
         for (int i = 0; i < OrderList.size(); i++) {
             Order Order = OrderList.get(i);
@@ -1114,6 +1127,17 @@ public class AktasSimulator {
             }
         }
         WriteFile.writeCSVfileEmirDaily(OrderListToDelete, "deleted_W_orders.csv");
+        OrderList.removeAll(OrderListToDelete);
+    }
+    
+    public static void filterTheRestOfWorders() throws Exception {
+        for (int i = 0; i < OrderList.size(); i++) {
+            Order Order = OrderList.get(i);
+            if ((Order.getDurum()).equalsIgnoreCase("W")) {
+            	OrderListToDelete.add(Order);
+            }
+        }
+        WriteFile.writeCSVfileEmirDaily(OrderListToDelete, "deleted_EndOfDay_W_orders.csv");
         OrderList.removeAll(OrderListToDelete);
     }
 
