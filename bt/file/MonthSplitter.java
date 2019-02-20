@@ -34,9 +34,9 @@ public class MonthSplitter {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        //int i = 1;
-        String emirFile = "orders_1999_KES_8.csv";
-        String islemFile = "trades_1999_KES_8.csv";
+        int i = 1;
+        String emirFile = "orders_2003_KES_4.csv";
+        String islemFile = "trades_2003_KES_4.csv";
 
         readOrderMonthCSVFile(emirFile);
         
@@ -59,11 +59,11 @@ public class MonthSplitter {
 //        while(orderListFullMonth.size()>0){
 //            
 //            
-//                //splitEmirlist(i);
+//                splitEmirlist(i);
 //                i++;
 //        }       
 //        i=1;
-//        while(islemList.size()>0){
+//        while(tradeListFullMonth.size()>0){
 //                splitIslemlist(i);
 //                i++;
 //        }
@@ -94,7 +94,7 @@ public class MonthSplitter {
     private static Trade convertLineToTrade(String line) {
         
         Trade t = new Trade();
-        bt.utils.Parse parser = new bt.utils.Parse(line, ",");        
+        bt.utils.Parse parser = new bt.utils.Parse(line, ";");        
         
         if (line != null) {
             //System.out.println("line:"+line);
@@ -247,6 +247,7 @@ public class MonthSplitter {
                 t.setKendineFon(tmp);
                 
                 tmp = parser.nextToken();
+                tmp = parser.nextToken();
             }
         }
         return t; 
@@ -326,7 +327,7 @@ public class MonthSplitter {
     
     public static Order convertLineToEmir(String line) {
         Order e = new Order();
-        bt.utils.Parse parser = new bt.utils.Parse(line, ",");
+        bt.utils.Parse parser = new bt.utils.Parse(line, ";");
 
         if (line != null) {
             String tmp = parser.nextToken();

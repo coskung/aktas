@@ -24,6 +24,7 @@ import bt.domain.Order;
 import bt.domain.Trade;
 import bt.file.WriteFile;
 import bt.utils.PropertyLoader;
+import bt.utils.TimeComparator;
 
 public class AktasSimulator {
     static ArrayList<Order> OrderList = new ArrayList<Order>();
@@ -100,7 +101,7 @@ public class AktasSimulator {
 
     public static Order convertLineToOrder(String line) {
         Order e = new Order();
-        bt.utils.Parse parser = new bt.utils.Parse(line, ";");
+        bt.utils.Parse parser = new bt.utils.Parse(line, ",");
 
         if (line != null) {
             //System.out.println("line:"+line);
@@ -390,8 +391,8 @@ public class AktasSimulator {
             readCSVfileOrder(OrderFile);
             readCSVfileTrade(TradeFile);
             //24.12.15 not: Order listesi zaten zamana gore sirali oldugu icin bu siralamaya gerek yok
-            //TimeComparator timeComparator = new TimeComparator();
-            //Collections.sort(OrderList, timeComparator);
+            TimeComparator timeComparator = new TimeComparator();
+            Collections.sort(OrderList, timeComparator);
             
             //24.12.15 not: asagidaki 3 metoda ihtiyac olup olmadigi Osman'a soruldu
             //filterRuchanFromOrder();  //29.12 ihtiyac yok yaniti geldi
@@ -404,7 +405,7 @@ public class AktasSimulator {
 //            deleteWLinesBetween1230and14();
 //            deleteWifKTRisE();
               filterWordersforGirisSaatiBuyukturSonDegistirmeSaatiAndQuantityEqualsBalance();
-              //filterWordersforQuantityEqualsBalance();
+              filterWordersforQuantityEqualsBalance();
               int countW = countWLines();
               System.out.println("W lines left:" + countW);
 //            filterXY();
@@ -435,6 +436,8 @@ public class AktasSimulator {
                 interruptTime = dailyDateFormat.parse(interruptTimeString);
             System.out.println("interruptTime"+interruptTime);
             
+            
+            WriteFile.writeCSVfileEmirDaily(OrderList, "initcreateloboncesi_orderlist.csv");
             initCreateLOB();
             
             //29.12.15 alttaki kisimlarda (if blogu) simdilik commentlendi, ihtiyaca gore degerlendirilecek
@@ -1308,7 +1311,7 @@ public class AktasSimulator {
 //                    fixDynamicLOBAfterLunch(i - 1);//i-1 cunku ogleden sonraki ilk Order az once alinmisti arada i artti. geri donmek lazim
 //                    morningFlagForDynamicLob = false;
 //                }
-                //System.out.println(order.getTime());
+                System.out.println(order.getEmirNumarasi());
                 if (order.getTime().after(OrderList.get(i - 1).getTime())) {
                 //if (orderTimeComparator(order, OrderList.get(i - 1))) {
                     int dif = (int) (order.getTime().getTime() - OrderList.get(i - 1).getTime().getTime()) / 1000;
@@ -1647,7 +1650,7 @@ public class AktasSimulator {
             }
         }
         System.out.println("EN SONA GELIP ISLENMEYEN VAR MI BAKISI");
-        checkIfUnprocessedLineExistAtEndOfLOBCreation();
+        //checkIfUnprocessedLineExistAtEndOfLOBCreation();
         printFullLineListLobLine(lobList);
     }
 
@@ -2273,7 +2276,7 @@ public class AktasSimulator {
                     System.out.println("\nupdateUnprocessedTrade guncelledi: lob line "+line.toString2());
                     lobList.set(i, line);
                     System.out.println("\neslesenTradelerListesi boyut: "+eslesenTradelerListesi.size() + "   tip: "+tip);
-                    System.out.println("eslesen: "+eslesenTradelerListesi.get(0).toString());
+                    System.out.println("eslesme - ilk trade: "+eslesenTradelerListesi.get(0).toStringCSV());
                     removeLinesFromLOBWhoseOrderVolumeisZero(eslesenTradelerListesi, swapTip(tip));
                     //yeniGelenOrderinLOBSatirininSilmeVeyaGuncellemesi(orderIdToChange,tip);
                     //updateLobListAfterRemoval(i);

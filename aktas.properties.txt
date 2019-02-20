@@ -6,8 +6,10 @@
 timetostop=
 lastorder=
 
-emir.1=TRT230800T13-02-Aug-99_emir.csv
-islem.1=TRT230800T13-02-Aug-99_islem.csv
+emir.1=TRB081003T15-07-Apr-03_emir.csv
+islem.1=TRB081003T15-07-Apr-03_islem.csv
+
+TRB081003T15-07-Apr-03_emir
 
 #emir.1=orders_2008_KES_5.csv
 #islem.1=trades_2008_KES_5.csv
