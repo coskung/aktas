@@ -169,7 +169,7 @@ public class WriteFile {
             BufferedWriter out = new BufferedWriter(fstream);
             //emirList.remove(0);
             for (Order emir : emirList) {
-                out.write(emir.toString() + "\n");
+                out.write(emir.toStringCSV() + "\n");
             }
             out.close();
             }catch (Exception e){//Catch exception if any
