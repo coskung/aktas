@@ -25,6 +25,7 @@ import bt.domain.Trade;
 import bt.file.WriteFile;
 import bt.utils.PropertyLoader;
 import bt.utils.TimeComparator;
+import bt.utils.TimeComparatorForIslem;
 
 public class AktasSimulator {
     static ArrayList<Order> OrderList = new ArrayList<Order>();
@@ -390,6 +391,8 @@ public class AktasSimulator {
     	}
     	TradeList.removeAll(TradeListToDelete);
     	System.out.println(TradeList.size());
+		TimeComparatorForIslem timeComparator = new TimeComparatorForIslem();
+		Collections.sort(TradeList, timeComparator);
     	WriteFile.writeCSVfileTrade(TradeList, "Trade_after_modifications2.csv");
     }
     
@@ -1477,7 +1480,7 @@ public class AktasSimulator {
 //                        }
                         lobList.add(line);
                         OrderlistModifiedamaaslindaLOBlistesi.add(line.toString());
-                        System.out.println("TEST 3");
+						System.out.println("TEST 3  -----   spread:" + line.getSpread());
                         buyMatchingCase(order, i, aggressiveness);
                     }
                 } else {//case 1.3  yeni gelen Orderin fiyati bidpricea esit
@@ -1512,7 +1515,7 @@ public class AktasSimulator {
                                     volumeAtAsk, volumeAtBid, i, aggressiveness);
                             lobList.add(line);
                             OrderlistModifiedamaaslindaLOBlistesi.add(line.toString());
-                            System.out.println("TEST 5");
+							System.out.println("TEST 5  -----   spread:" + line.getSpread());
                             buyMatchingCase(order, i, aggressiveness);
                         }
                         //sifirsa:
@@ -1615,7 +1618,7 @@ public class AktasSimulator {
 //                        }
                         lobList.add(line);
                         OrderlistModifiedamaaslindaLOBlistesi.add(line.toString());
-                        System.out.println("TEST 8");
+						System.out.println("TEST 8  -----   spread:" + line.getSpread());
                         sellMatchingCase(order, i, aggressiveness);
                     }
                 } else {//case 2.3
@@ -1649,7 +1652,7 @@ public class AktasSimulator {
                                     volumeAtAsk, volumeAtBid, i, aggressiveness);
                             lobList.add(line);
                             OrderlistModifiedamaaslindaLOBlistesi.add(line.toString());
-                            System.out.println("TEST 10");
+							System.out.println("TEST 10  -----   spread:" + line.getSpread());
                             sellMatchingCase(order, i, aggressiveness);
                         }
                         //sifirsa:
