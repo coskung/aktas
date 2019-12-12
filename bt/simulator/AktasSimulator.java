@@ -102,15 +102,17 @@ public class AktasSimulator {
 
     public static Order convertLineToOrder(String line) {
         Order e = new Order();
-        bt.utils.Parse parser = new bt.utils.Parse(line, ",");
+		bt.utils.Parse parser = new bt.utils.Parse(line, ";");
 
         if (line != null) {
-            //System.out.println("line:"+line);
+			// System.out.println("line:" + line);
             String tmp = parser.nextToken();
             while (tmp != null) {
+				// System.out.println(tmp);
                 e.setEmirNumarasi(tmp);
                 
                 tmp = parser.nextToken();
+
                 Date emirTarihi = null;
                 try {
                     emirTarihi = emirDateFormat.parse(tmp);
@@ -412,8 +414,8 @@ public class AktasSimulator {
             readCSVfileTrade(TradeFile);
             mergeTradeLines();//her islem iki satirda yer aldigi icin birlesmesi gerekiyor
             //24.12.15 not: Order listesi zaten zamana gore sirali oldugu icin bu siralamaya gerek yok
-            TimeComparator timeComparator = new TimeComparator();
-            Collections.sort(OrderList, timeComparator);
+			TimeComparator timeComparator = new TimeComparator();
+			Collections.sort(OrderList, timeComparator);
             
             //24.12.15 not: asagidaki 3 metoda ihtiyac olup olmadigi Osman'a soruldu
             //filterRuchanFromOrder();  //29.12 ihtiyac yok yaniti geldi
@@ -2212,6 +2214,10 @@ public class AktasSimulator {
     }
     
     public static void removeLinesFromLOBWhoseOrderVolumeisZero(List<Trade> eslesenlerListesi, String tip) {
+		System.out.println("removeLinesFromLOBWhoseOrderVolumeisZero");
+		// printFullLineListLobLine(lobList);
+		System.out.println("----");
+		System.out.println("eslesenlerlistesi size:" + eslesenlerListesi.size());
         ArrayList<LOBLine> lobListToDelete = new ArrayList<LOBLine>();
         int startingLineForUpdate = lobList.size();
         String orderId;
@@ -2222,6 +2228,8 @@ public class AktasSimulator {
                 orderId = eslesenlerListesi.get(j).getB_emirNo(); //sell ile eslesen buyerorderid'leri ara
             for (int i = 0; i < lobList.size(); i++) {
                 LOBLine line = lobList.get(i);
+				// System.out.println("orderid:" + orderId);
+				// System.out.println("line:" + line);
                 if (orderId.equalsIgnoreCase(line.getE().getEmirNumarasi()) && line.getE().getBakiye()<=0) {
                     if (i < startingLineForUpdate)
                         startingLineForUpdate = i;
@@ -2229,6 +2237,9 @@ public class AktasSimulator {
                 }
             }
         }
+		// System.out.println("---- loblist to delete: (size)" + lobListToDelete.size());
+		printFullLineListLobLine(lobListToDelete);
+
         lobList.removeAll(lobListToDelete);
         lobListDeleted.addAll(lobListToDelete);
         System.out.println("startingLineForUpdate:"+startingLineForUpdate);
@@ -2244,8 +2255,8 @@ public class AktasSimulator {
         for (int i = 0; i < lobList.size(); i++) {
             LOBLine line = lobList.get(i);
             if (orderIdToChange.equalsIgnoreCase(line.getE().getEmirNumarasi())) {
-                if (line.getE().getBakiye() == 0) {
-                    //System.out.println("yeniGelenOrderinLOBSatirininSilmeVeyaGuncellemesi "+orderIdToChange);
+				if (line.getE().getBakiye() <= 0) {
+					System.out.println("yeniGelenOrderinLOBSatirininSilmeVeyaGuncellemesi " + orderIdToChange);
                     if (i < startingLineForUpdate)
                         startingLineForUpdate = i;
                     lobListToDelete.add(line);
