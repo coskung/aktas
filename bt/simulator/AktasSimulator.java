@@ -225,7 +225,7 @@ public class AktasSimulator {
         t.setProcessed(false);
         
         if (line != null) {
-            //System.out.println("line:"+line);
+			System.out.println("line:" + line);
             String tmp = parser.nextToken();
             
             while (tmp != null) {
@@ -235,7 +235,7 @@ public class AktasSimulator {
                 //System.out.println(alis_satis);
                 
                 tmp = parser.nextToken();
-                //System.out.println(tmp);
+				// System.out.println(tmp);
                 Date islemTarihi = null;
                 try {
                     islemTarihi = emirDateFormat.parse(tmp);
@@ -1481,6 +1481,7 @@ public class AktasSimulator {
                         lobList.add(line);
                         OrderlistModifiedamaaslindaLOBlistesi.add(line.toString());
 						System.out.println("TEST 3  -----   spread:" + line.getSpread());
+						System.out.println("related order:" + order.toStringCSV());
                         buyMatchingCase(order, i, aggressiveness);
                     }
                 } else {//case 1.3  yeni gelen Orderin fiyati bidpricea esit
