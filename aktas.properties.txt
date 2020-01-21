@@ -5,6 +5,7 @@
 
 timetostop=
 lastorder=
+#lastorder=200304070001556
 
 emir.1=TRB081003T15-07-Apr-03_emir.csv
 islem.1=TRB081003T15-07-Apr-03_islem.csv

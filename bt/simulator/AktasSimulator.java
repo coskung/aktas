@@ -227,7 +227,7 @@ public class AktasSimulator {
         t.setProcessed(false);
         
         if (line != null) {
-			System.out.println("line:" + line);
+			// System.out.println("line:" + line);
             String tmp = parser.nextToken();
             
             while (tmp != null) {
@@ -427,8 +427,8 @@ public class AktasSimulator {
 //            deleteWLinesAfter17();
 //            deleteWLinesBetween1230and14();
 //            deleteWifKTRisE();
-              filterWordersforGirisSaatiBuyukturSonDegistirmeSaatiAndQuantityEqualsBalance();
-              filterWordersforQuantityEqualsBalance();
+			// filterWordersforGirisSaatiBuyukturSonDegistirmeSaatiAndQuantityEqualsBalance();
+			// filterWordersforQuantityEqualsBalance();
               int countW = countWLines();
               System.out.println("W lines left:" + countW);
               
@@ -1139,7 +1139,7 @@ public class AktasSimulator {
     public static void filterWordersforGirisSaatiBuyukturSonDegistirmeSaatiAndQuantityEqualsBalance() throws Exception {
         for (int i = 0; i < OrderList.size(); i++) {
             Order Order = OrderList.get(i);
-            if ((Order.getDurum()).equalsIgnoreCase("W") && Order.getBakiye()==Order.getMiktar()
+			if ((Order.getDurum()).equalsIgnoreCase("W") && Order.getDosyadakiBakiye() == Order.getMiktar()
             		&& Order.getGirisSaati().compareTo(Order.getSonDegistirmeSaati())>=0) {
             	OrderListToDelete.add(Order);
             }
@@ -1151,7 +1151,7 @@ public class AktasSimulator {
     public static void filterWordersforQuantityEqualsBalance() throws Exception {
         for (int i = 0; i < OrderList.size(); i++) {
             Order Order = OrderList.get(i);
-            if ((Order.getDurum()).equalsIgnoreCase("W") && Order.getBakiye()==Order.getMiktar()) {
+			if ((Order.getDurum()).equalsIgnoreCase("W") && Order.getDosyadakiBakiye() == Order.getMiktar()) {
             	OrderListToDelete.add(Order);
             }
         }
@@ -1444,6 +1444,8 @@ public class AktasSimulator {
 //                    System.out.println("TEST 1");
                     if(findMatchingLinesAtTradeList(order.getEmirNumarasi(), order.getTime(), "buy").size()>0)
                         buyMatchingCase(order, i, aggressiveness);
+					else
+						bidPrice = order.getFiyat();
                 } else if (order.getFiyat().compareTo(bidPrice) > 0) { //case 1.2
                     volumeAtBidMemory = volumeAtBid;
                     bidPriceMemory = bidPrice;
@@ -1483,6 +1485,7 @@ public class AktasSimulator {
                         lobList.add(line);
                         OrderlistModifiedamaaslindaLOBlistesi.add(line.toString());
 						System.out.println("TEST 3  -----   spread:" + line.getSpread());
+						System.out.println("TEST 3  -----   spread  askprice:" + askPrice + "---bidprice:" + bidPrice);
 						System.out.println("related order:" + order.toStringCSV());
                         buyMatchingCase(order, i, aggressiveness);
                     }
@@ -1585,6 +1588,8 @@ public class AktasSimulator {
                     System.out.println("TEST 6");
                     if(findMatchingLinesAtTradeList(order.getEmirNumarasi(), order.getTime(), "sell").size()>0)
                         sellMatchingCase(order, i, aggressiveness);
+					else
+						askPrice = order.getFiyat();
                 } else if (order.getFiyat().compareTo(askPrice) < 0) { //case 2.2
                     askPriceMemory = askPrice;
                     volumeAtAskMemory = volumeAtAsk;
@@ -1838,8 +1843,12 @@ public class AktasSimulator {
                 	return;
                 }
                 int volumeToSubtract = eslesenTradelerListesi.get(j).getMiktar();
-                OrderToChange.setBakiye(OrderToChange.getBakiye() - volumeToSubtract);//eslesen son emrin hacmi-eslesme kadar azalir
-                if(OrderToChange.getBakiye()!=0){
+				// OrderToChange.setBakiye(OrderToChange.getBakiye() - volumeToSubtract);//eslesen son emrin
+				// hacmi-eslesme kadar azalir
+				OrderToChange.setMiktar(OrderToChange.getMiktar() - volumeToSubtract); // 13.12.2019
+																						// buyMatchingCase'deki
+																						// aciklamaya dikkat!
+				if (OrderToChange.getMiktar() != 0) {
                     lastMatchisZero=false;
                     eslesenSifirlanmayanTradelerListesi.add(eslesenTradelerListesi.get(j));
                 }   
@@ -1849,7 +1858,7 @@ public class AktasSimulator {
                     lobLineToUpdate.setE(OrderToChange);
                     lobList.set(indexToUpdate, lobLineToUpdate);
                     System.out.println("CHECKPOINT");
-                    System.out.println(OrderToChange.toString());
+					System.out.println(OrderToChange.toStringCSV());
                 }
                 else{
                     eslesenTradelerListesi.remove(eslesenTradelerListesi.get(j));
@@ -1868,7 +1877,7 @@ public class AktasSimulator {
             Order sellOrderToChange = getIndexOfaLineFromLOBList(sellorderIdToChange);
             System.out.println("sellOrderToChange:"+sellOrderToChange);
             //eslesen son emrin hacmi-eslesmelerin toplami kadar azalir
-            sellOrderToChange.setBakiye(sellOrderToChange.getBakiye() - eslesenVolumelerToplami);
+			sellOrderToChange.setMiktar(sellOrderToChange.getMiktar() - eslesenVolumelerToplami);
             System.out.println("sellOrderToChange.setVolume:"+sellOrderToChange.getBakiye());
             int sellindexToUpdate = getIndexOfaLineFromLOBList(sellOrderToChange);
             LOBLine lobLineToUpdateSell = lobList.get(sellindexToUpdate);
@@ -1924,8 +1933,14 @@ public class AktasSimulator {
                 	return;
                 }
                 int volumeToSubtract = eslesenTradelerListesi.get(j).getMiktar();
-                OrderToChange.setBakiye(OrderToChange.getMiktar() - volumeToSubtract);//eslesen son emrin hacmi-eslesme kadar azalir
-                if(OrderToChange.getBakiye()!=0){
+				// OrderToChange.setBakiye(OrderToChange.getMiktar() - volumeToSubtract);//eslesen son emrin
+				// hacmi-eslesme kadar azalir
+				OrderToChange.setMiktar(OrderToChange.getMiktar() - volumeToSubtract); // 13.12.2019 ust satir yerine bu
+																						// geldi cunku emir dosyasindaki
+																						// bakiye bilgisi gun sonunda
+																						// borsanin guncelledigi bilgi
+				// bizim hep miktar uzerinden guncellemeleri yapmamiz lazim.
+				if (OrderToChange.getMiktar() != 0) {
                     lastMatchisZero=false;
                     eslesenSifirlanmayanTradelerListesi.add(eslesenTradelerListesi.get(j));
                 }
@@ -1956,7 +1971,7 @@ public class AktasSimulator {
             	System.out.println("ordertochange: HENUZ DIGER EMIR GELMEMIS");
             	return;
             }
-            buyOrderToChange.setBakiye(buyOrderToChange.getBakiye() - eslesenVolumelerToplami);
+			buyOrderToChange.setMiktar(buyOrderToChange.getMiktar() - eslesenVolumelerToplami);
             int buyindexToUpdate = getIndexOfaLineFromLOBList(buyOrderToChange);
             LOBLine lobLineToUpdateBuy = lobList.get(buyindexToUpdate);
             lobLineToUpdateBuy.setE(buyOrderToChange);
@@ -2069,19 +2084,20 @@ public class AktasSimulator {
                 }
             }
         }
-//        for (int i = 0; i < liste.size(); i++) {
-//            Trade Trade = liste.get(i);
-//            if("buy".equalsIgnoreCase(tip)){
-//                if (checkIfLobLineExists(Trade.getS_emirNo())==-1){  
-//                    out.add(Trade);
-//                }
-//            }
-//            else if("sell".equalsIgnoreCase(tip)){
-//                if (checkIfLobLineExists(Trade.getB_emirNo())==-1){  
-//                    out.add(Trade);
-//                }
-//            }
-//        }
+		for (int i = 0; i < liste.size(); i++) {
+			Trade Trade = liste.get(i);
+			if ("buy".equalsIgnoreCase(tip)) {
+				if (checkIfLobLineExists(Trade.getS_emirNo()) == -1) {
+					out.add(Trade);
+				}
+			} else if ("sell".equalsIgnoreCase(tip)) {
+				if (checkIfLobLineExists(Trade.getB_emirNo()) == -1) {
+					out.add(Trade);
+				}
+			}
+		}
+		System.out.println("tam burada bir silme islemi olacak. trade listesinden silinenlerin sayisi:" + out.size());
+		
         System.out.println("findMatchingLinesAtTradeListFor "+tip+" "+ liste.size());
         liste.removeAll(out);
         return liste;
@@ -2230,7 +2246,7 @@ public class AktasSimulator {
                 LOBLine line = lobList.get(i);
 				// System.out.println("orderid:" + orderId);
 				// System.out.println("line:" + line);
-                if (orderId.equalsIgnoreCase(line.getE().getEmirNumarasi()) && line.getE().getBakiye()<=0) {
+				if (orderId.equalsIgnoreCase(line.getE().getEmirNumarasi()) && line.getE().getMiktar() <= 0) {
                     if (i < startingLineForUpdate)
                         startingLineForUpdate = i;
                     lobListToDelete.add(line);
@@ -2361,6 +2377,7 @@ public class AktasSimulator {
         volumeAtAsk = prevLine.getAskVol();
         for (int i = start; i < lobList.size(); i++) {
             LOBLine line = lobList.get(i);
+			System.out.println("\n\nUPDATE BASLIYOR -- line:" + line.toString2());
             Order Order = line.getE();
             String aggressiveness = line.getAggressive();
             if ("B".equalsIgnoreCase(Order.getAlis_satis())){
@@ -2384,7 +2401,8 @@ public class AktasSimulator {
                     lobList.set(i, line);
                 }
             } else if ("S".equalsIgnoreCase(Order.getAlis_satis())){
-
+				System.out.println("Order.getfiyat: " + Order.getFiyat());
+				System.out.println("askprice:" + askPrice);
                 if (Order.getFiyat().compareTo(askPrice) > 0) { //case 2.1
                     line = new LOBLine(Order, askPrice, bidPrice, volumeAtAsk, volumeAtBid, i, aggressiveness);
                     lobList.set(i, line);
@@ -2396,11 +2414,13 @@ public class AktasSimulator {
                         lobList.set(i, line);
                     }
                 } else {//case 2.3
+					System.out.println("case 2.3");
                     volumeAtAsk = volumeAtAsk + Order.getBakiye();
                     line = new LOBLine(Order, askPrice, bidPrice, volumeAtAsk, volumeAtBid, i, aggressiveness);
                     lobList.set(i, line);
                 }
             }
+			System.out.println("\n\nUPDATE BITTI -- line:" + line.toString2());
         }
     }
 

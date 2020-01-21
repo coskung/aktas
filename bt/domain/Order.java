@@ -2,7 +2,6 @@ package bt.domain;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -92,8 +91,13 @@ public class Order {
         this.miktar = miktar;
     }
     public int getBakiye() {
-        return bakiye;
+		// return bakiye;
+		return getMiktar();
     }
+
+	public int getDosyadakiBakiye() {
+		return bakiye;
+	}
     public void setBakiye(int bakiye) {
         this.bakiye = bakiye;
     }
