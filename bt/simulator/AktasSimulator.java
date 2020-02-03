@@ -26,6 +26,7 @@ import bt.file.WriteFile;
 import bt.utils.PropertyLoader;
 import bt.utils.TimeComparator;
 import bt.utils.TimeComparatorForIslem;
+import bt.utils.islemLOBComposer;
 
 public class AktasSimulator {
     static ArrayList<Order> OrderList = new ArrayList<Order>();
@@ -496,7 +497,11 @@ public class AktasSimulator {
                 dynamicLob.clear();
                 dynamicLobString.clear();
             }
-			//29.12.15 - comment out: TradeLOBComposer.composeTradeAndDynamicLOB(TradeList, "dynamicLob.csv", "TradeComposedDynamicLOB.csv",OrderList,i,lastTradeOfYesterday);
+			// 29.12.15 - comment out:
+			// TradeLOBComposer.composeTradeAndDynamicLOB(TradeList, "dynamicLob.csv", "TradeComposedDynamicLOB.csv" /*,
+			// OrderList, i, lastTradeOfYesterday */);
+			islemLOBComposer.composeTradeAndDynamicLOB(TradeList, "dynamicLob.csv", "TradeComposedDynamicLOB.csv", OrderList, i, lastTradeOfYesterday);
+
 			lastTradeOfYesterday=TradeList.get(TradeList.size()-1);
 			OrderList.clear();
             TradeList.clear();
