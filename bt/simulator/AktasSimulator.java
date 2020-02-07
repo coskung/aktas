@@ -26,7 +26,6 @@ import bt.file.WriteFile;
 import bt.utils.PropertyLoader;
 import bt.utils.TimeComparator;
 import bt.utils.TimeComparatorForIslem;
-import bt.utils.islemLOBComposer;
 
 public class AktasSimulator {
     static ArrayList<Order> OrderList = new ArrayList<Order>();
@@ -433,6 +432,7 @@ public class AktasSimulator {
               int countW = countWLines();
               System.out.println("W lines left:" + countW);
               
+			filterAorders();
               
               
 //            filterXY();
@@ -500,7 +500,7 @@ public class AktasSimulator {
 			// 29.12.15 - comment out:
 			// TradeLOBComposer.composeTradeAndDynamicLOB(TradeList, "dynamicLob.csv", "TradeComposedDynamicLOB.csv" /*,
 			// OrderList, i, lastTradeOfYesterday */);
-			islemLOBComposer.composeTradeAndDynamicLOB(TradeList, "dynamicLob.csv", "TradeComposedDynamicLOB.csv", OrderList, i, lastTradeOfYesterday);
+			//islemLOBComposer.composeTradeAndDynamicLOB(TradeList, "dynamicLob.csv", "TradeComposedDynamicLOB.csv", OrderList, i, lastTradeOfYesterday);
 
 			lastTradeOfYesterday=TradeList.get(TradeList.size()-1);
 			OrderList.clear();
@@ -1174,6 +1174,17 @@ public class AktasSimulator {
         WriteFile.writeCSVfileEmirDaily(OrderListToDelete, "deleted_EndOfDay_W_orders.csv");
         OrderList.removeAll(OrderListToDelete);
     }
+
+	public static void filterAorders() throws Exception {
+		for (int i = 0; i < OrderList.size(); i++) {
+			Order Order = OrderList.get(i);
+			if ((Order.getDurum()).equalsIgnoreCase("A")) {
+				OrderListToDelete.add(Order);
+			}
+		}
+		WriteFile.writeCSVfileEmirDaily(OrderListToDelete, "deleted_A_orders.csv");
+		OrderList.removeAll(OrderListToDelete);
+	}
 
 //    public static int findSmaller(int v1, int v2) {
 //        if (v1 > v2)
