@@ -204,17 +204,16 @@ public class Order {
         //try {
             Calendar tmp = Calendar.getInstance();
             tmp.setTime(this.getEmirTarihi());
-            tmp.set(Calendar.HOUR, Integer.parseInt(this.getGirisSaati().substring(0,2)));
-            tmp.set(Calendar.MINUTE, Integer.parseInt(this.getGirisSaati().substring(2,4)));
-            tmp.set(Calendar.SECOND, Integer.parseInt(this.getGirisSaati().substring(4,6)));
-            tmp.set(Calendar.MILLISECOND, Integer.parseInt(this.getGirisSaati().substring(6,9)));
+            String girisSaati=this.getGirisSaati();
+            if(girisSaati.length()==8)
+            	girisSaati="0"+girisSaati;
+            tmp.set(Calendar.HOUR, Integer.parseInt(girisSaati.substring(0,2)));
+            tmp.set(Calendar.MINUTE, Integer.parseInt(girisSaati.substring(2,4)));
+            tmp.set(Calendar.SECOND, Integer.parseInt(girisSaati.substring(4,6)));
+            tmp.set(Calendar.MILLISECOND, Integer.parseInt(girisSaati.substring(6,9)));
             return tmp.getTime();
-            //return dateFormat.parse(this.getEmirTarihi() + " " + this.getGirisSaati());
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
     }
+    
     public String isNull(Object s){
         if(s==null)
             return "";
