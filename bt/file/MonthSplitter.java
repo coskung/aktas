@@ -35,8 +35,8 @@ public class MonthSplitter {
      */
     public static void main(String[] args) throws Exception {
         int i = 1;
-        String emirFile = "orders_2003_KES_4.csv";
-        String islemFile = "trades_2003_KES_4.csv";
+        String emirFile = "orders_2011_KES_5.csv";
+        String islemFile = "trades_2011_KES_5.csv";
 
         readOrderMonthCSVFile(emirFile);
         
@@ -344,6 +344,8 @@ public class MonthSplitter {
                 }
                 
                 tmp = parser.nextToken();
+                if(tmp.length()==8)
+                	tmp="0"+tmp;
                 e.setGirisSaati(tmp);
                 
                 tmp = parser.nextToken();
