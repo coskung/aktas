@@ -49,7 +49,9 @@ public class islemLOBComposer {
 				// islem.setEski_yeni(getLaterOrderInfo(islem, emirList));
 				// out.write(islem.toStringCSV() +
 				// getDynamicLobPart(islem,fileIndex)+"\n");
-				out.append(islem.toStringCSV() + getDynamicLobPart(islem, fileIndex, islemindex, islemList, lastTradeOfYesterday) + "\n");
+				String dynamicLobPart = getDynamicLobPart(islem, fileIndex, islemindex, islemList, lastTradeOfYesterday);
+				if(dynamicLobPart.compareTo("-1")!=0)
+					out.append(islem.toStringCSV() + dynamicLobPart + "\n");
 				islemindex++;
 			}
 			out.close();
@@ -106,11 +108,13 @@ public class islemLOBComposer {
 		StringBuilder islemTime = new StringBuilder(dailyConcatDateFormat.format(islem.getTime()));
 		System.out.println("getDynamicLobPart, islem zamani converted:" + islemTime.toString());
 
-		LOBLine line0 = getCorrespondingDynamicLobFromList(islemTime.toString(), 0, fileIndex);
+		LOBLine line0 = getCorrespondingDynamicLobFromList(islem, islemTime.toString(), 0, fileIndex);
 		// LOBLine line1 = getCorrespondingDynamicLobFromList(islemTime.toString(), 1, fileIndex);
 		// LOBLine line5 = getCorrespondingDynamicLobFromList(islemTime.toString(), 5, fileIndex);
-		System.out.println("line0" + line0);
+		System.out.println("line0 (pls ignore if null)" + line0);
 
+		if(line0==null)
+			return "-1";
 		String t = getOneDynamicLobLine(line0);
 
 		System.out.println("t" + t);
@@ -192,7 +196,7 @@ public class islemLOBComposer {
 		line1addition += line1.getE().getGirisSaati() + ";";
 		line1addition += line1.getBid() + ";";
 		line1addition += line1.getAsk() + ";";
-		line1addition += line1.getSpread() + ";";
+		line1addition += line1.getSpread().toPlainString() + ";";
 		line1addition += line1.getBidVol() + ";";
 		line1addition += line1.getAskVol() + ";";
 		line1addition += line1.getMidpoint() + ";";
@@ -206,22 +210,24 @@ public class islemLOBComposer {
 		return line1addition;
 	}
 
-	private static LOBLine getCorrespondingDynamicLobFromList(String time, int diff, int fileIndex) {
+	private static LOBLine getCorrespondingDynamicLobFromList(Trade islem, String time, int diff, int fileIndex) {
 		System.out.println("getCorrespondingDynamicLobFromList");
 		// System.out.println("diff:" + diff);
 		// System.out.println("fileindex:" + fileIndex);
 
 		int start = 0;
-		start = (fileIndex - 1) * lineCount;
+		//start = (fileIndex - 1) * lineCount;
 
-		// System.out.println("start:" + start);
-		// System.out.println("dyn list size:" + dynamicLobList.size());
-		// System.out.println("time:" + time);
+		 //System.out.println("start:" + start);
+		 //System.out.println("dyn list size:" + dynamicLobList.size());
+		 //System.out.println("time:" + time);
 
 		for (int i = start; i < dynamicLobList.size(); i++) {
 			LOBLine dline = dynamicLobList.get(i);
-			// System.out.println(dline.getE().getGirisSaati().substring(0, 6)); // 133254537
-			if (dline.getE().getGirisSaati().substring(0, 6).compareTo(time) >= 0) {
+			//System.out.println(dline.getE().getGirisSaati().substring(0, 6)); // 133254537
+			//System.out.println(time);
+			if (dline.getE().getGirisSaati().substring(0, 6).compareTo(time) >= 0
+					&& dline.getE().getEmirTarihi().compareTo(islem.getIslemTarihi())==0) {
 				// System.out.println("dline:" + dline.toStringDynamic());
 				if (i > diff) {
 					// if(diff==0)
