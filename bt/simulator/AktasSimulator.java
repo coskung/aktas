@@ -1360,6 +1360,36 @@ public class AktasSimulator {
                 //if (orderTimeComparator(order, OrderList.get(i - 1))) {
                     int dif = (int) (order.getTime().getTime() - OrderList.get(i - 1).getTime().getTime()) / 1000;
                     for (int k = 0; k < dif && dif < 3000; k++) {
+						if (lobList.size() == 0) {
+							// 06.05.2020 Ozel durum. Ilk gelen emirlerle hemen
+							// bir eslesme olunca
+							// bunlar lob'dan silindigi icin ornegin ucuncu
+							// dorduncu emir gelince lob bos kaliyor
+							// o yuzden asagidaki lobList.get(lobList.size() -
+							// 1) ifadesi hataya sebep oluyordu
+							// bunun icin cozum: initCreateLOB metodunun
+							// basindaki ilk emir gelince onu lob'a ekleme
+							// prosedurunu burada tekrarlamak.
+
+							LOBLine line1temp = null;
+							if ("B".equalsIgnoreCase(order.getAlis_satis())) {
+								bidPrice = order.getFiyat();
+								volumeAtBid = order.getMiktar();
+								askPrice = new BigDecimal(100); // TODO check
+																// this
+								volumeAtAsk = 0;
+								line1temp = new LOBLine(order, askPrice, bidPrice, 0, volumeAtBid, 1, "5B");
+							} else if ("S".equalsIgnoreCase(order.getAlis_satis())) {
+								askPrice = order.getFiyat();
+								volumeAtAsk = order.getMiktar();
+								bidPrice = new BigDecimal(0.10).setScale(2, RoundingMode.HALF_UP);
+								volumeAtBid = 0;
+								line1temp = new LOBLine(order, askPrice, bidPrice, volumeAtAsk, 0, 1, "5S");
+							}
+							lobList.add(line1temp);
+							OrderlistModifiedamaaslindaLOBlistesi.add(line1temp.toString2());
+
+						}
                         LOBLine line = lobList.get(lobList.size() - 1);
                         //if(k==0){
                         line.setCountLOBLine(countLOBLinesAtTimeOfGivenOrder(order));
