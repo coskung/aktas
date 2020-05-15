@@ -184,7 +184,7 @@ public class AktasSimulator {
                 }
                 
                 tmp = parser.nextToken();
-                if(tmp!=null && !tmp.isEmpty()){
+                if(tmp!=null && !tmp.isEmpty() && tmp.compareTo("null")!=0){
                     BigDecimal getiri = new BigDecimal(tmp);
                     e.setGetiri(getiri);
                 }else
@@ -314,7 +314,7 @@ public class AktasSimulator {
                 }
                 
                 tmp = parser.nextToken();
-                if(tmp!=null && !tmp.isEmpty()){
+                if(tmp!=null && !tmp.isEmpty() && tmp.compareTo("null")!=0){
                     BigDecimal getiri = new BigDecimal(tmp);
                     t.setGetiri(getiri);
                 }else
@@ -1401,7 +1401,13 @@ public class AktasSimulator {
                         //}
                         dynamicLob.add(line);
                         //WriteFile.writeCSVfileLOBAppendLine(line, "dynamicLob.csv");
-                        dynamicLobString.add(line.toStringDynamic()+"%"+line.getExtra2b2sdata());
+                        if(line.getSpread().compareTo(BigDecimal.ZERO)<0){
+                        	System.out.println("\n\n SPREAD EKSI OLDU  1 ALTTAKI SATIRI ATLIYORUZ ");
+                        	System.out.println(line.toString());
+                        }
+                        else{	
+                        	dynamicLobString.add(line.toStringDynamic()+"%"+line.getExtra2b2sdata());
+                        }
                     }
                     if (dif > 3000) {
                         //dynamicLob.add(lobList.get(lobList.size()-1));
@@ -1417,6 +1423,10 @@ public class AktasSimulator {
                         //}
                         dynamicLob.add(line);
                         //WriteFile.writeCSVfileLOBAppendLine(line, "dynamicLob.csv");
+                        if(line.getSpread().compareTo(BigDecimal.ZERO)<0){
+                        	System.out.println("\n\n SPREAD EKSI OLDU  2 ALTTAKI SATIRI ATLIYORUZ ");
+                        	System.out.println(line.toString());
+                        }
                         dynamicLobString.add(line.toStringDynamic()+"%"+line.getExtra2b2sdata());
                         //System.out.println("dif>3000 iken eldeki Order:"+Order);
                         fixDynamicLOBEndOfMorning(i);
@@ -1469,7 +1479,7 @@ public class AktasSimulator {
                 } else {// if(Order.getPrice()<bidPrice){
                     aggressiveness = "5B";
                 }
-                //System.out.println("aggr: " + aggressiveness);
+                System.out.println("aggr: " + aggressiveness);
 //                if ("C".equalsIgnoreCase(order.getOrderType())) { //initial step of case 3
 //                    removeAllWithSameOrderIdExceptModifiedLine(order);
 //                    if(order.getVolume()==0){
@@ -1480,6 +1490,8 @@ public class AktasSimulator {
 
                 if (order.getFiyat().compareTo(bidPrice) < 0) { //case 1.1
                     line = new LOBLine(order, askPrice, bidPrice, volumeAtAsk, volumeAtBid, i, aggressiveness);
+                    lobList.add(line);
+                    OrderlistModifiedamaaslindaLOBlistesi.add(line.toString2());
 //                    if ("E".equalsIgnoreCase(order.getKtr())){
 //                        lobListDeleted.add(line);
 //                        lobList.add(line);
@@ -1492,8 +1504,8 @@ public class AktasSimulator {
 //                    System.out.println("TEST 1");
                     if(findMatchingLinesAtTradeList(order.getEmirNumarasi(), order.getTime(), "buy").size()>0)
                         buyMatchingCase(order, i, aggressiveness);
-					else
-						bidPrice = order.getFiyat();
+					//else
+					//	bidPrice = order.getFiyat();
                 } else if (order.getFiyat().compareTo(bidPrice) > 0) { //case 1.2
                     volumeAtBidMemory = volumeAtBid;
                     bidPriceMemory = bidPrice;
@@ -1536,6 +1548,10 @@ public class AktasSimulator {
 						System.out.println("TEST 3  -----   spread  askprice:" + askPrice + "---bidprice:" + bidPrice);
 						System.out.println("related order:" + order.toStringCSV());
                         buyMatchingCase(order, i, aggressiveness);
+                        if(line.getSpread().compareTo(BigDecimal.ZERO)<=0){
+                        	lobList.remove(line);
+                        	bidPrice=bidPriceMemory;
+                        }
                     }
                 } else {//case 1.3  yeni gelen Orderin fiyati bidpricea esit
                     line = new LOBLine(order, askPrice, bidPrice, volumeAtAsk, volumeAtBid, i, aggressiveness);
@@ -1676,6 +1692,10 @@ public class AktasSimulator {
                         OrderlistModifiedamaaslindaLOBlistesi.add(line.toString());
 						System.out.println("TEST 8  -----   spread:" + line.getSpread());
                         sellMatchingCase(order, i, aggressiveness);
+                        if(line.getSpread().compareTo(BigDecimal.ZERO)<=0){
+                        	lobList.remove(line);
+                        	askPrice=askPriceMemory;
+                        }
                     }
                 } else {//case 2.3
                     line = new LOBLine(order, askPrice, bidPrice, volumeAtAsk, volumeAtBid, i, aggressiveness);
@@ -2259,6 +2279,10 @@ public class AktasSimulator {
             //printFullLineListLobLine(lobList);
             dynamicLob.add(lobList.get(lobList.size()-1));
             //WriteFile.writeCSVfileLOBAppendLine(lobList.get(lobList.size()-1), "dynamicLob.csv");
+            if(lobList.get(lobList.size()-1).getSpread().compareTo(BigDecimal.ZERO)<0){
+            	System.out.println("\n\n\n SPREAD EKSI OLDU  3  ");
+            	System.out.println(lobList.get(lobList.size()-1).toString());
+            }
             dynamicLobString.add(lobList.get(lobList.size()-1).toStringDynamic());
             System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ isi biten Order: "
                     + Order.getEmirNumarasi() + " askprice: " + askPrice + " volumeAtAsk: " + volumeAtAsk);
