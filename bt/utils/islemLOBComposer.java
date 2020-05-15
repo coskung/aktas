@@ -196,7 +196,7 @@ public class islemLOBComposer {
 		line1addition += line1.getE().getGirisSaati() + ";";
 		line1addition += line1.getBid() + ";";
 		line1addition += line1.getAsk() + ";";
-		line1addition += line1.getSpread().toPlainString() + ";";
+		line1addition += formatDisplay(line1.getSpread(),5)+";";
 		line1addition += line1.getBidVol() + ";";
 		line1addition += line1.getAskVol() + ";";
 		line1addition += line1.getMidpoint() + ";";
@@ -210,6 +210,19 @@ public class islemLOBComposer {
 		return line1addition;
 	}
 
+
+	public static String formatDisplay(BigDecimal spread2,int len) {
+		String s = spread2 + "";
+		if (s.contains(".")) {
+			int ind = s.lastIndexOf(".");
+			if(s.length()-ind>2){
+				String t = s.substring(0, ind + len);
+				return t;
+			}
+		}
+		return s;
+	}
+	
 	private static LOBLine getCorrespondingDynamicLobFromList(Trade islem, String time, int diff, int fileIndex) {
 		System.out.println("getCorrespondingDynamicLobFromList");
 		// System.out.println("diff:" + diff);
