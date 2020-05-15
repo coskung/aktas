@@ -143,7 +143,7 @@ public class LOBLine {
 		this.bidVol=sellV;
 		this.index=ind;
 		if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
-            this.spread=ask.subtract(bid);
+            this.spread=(ask.subtract(bid)).setScale(6,RoundingMode.HALF_UP);
         if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
             this.midpoint=(ask.add(bid)).divide(new BigDecimal(2),3,RoundingMode.HALF_UP);
         if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
@@ -158,7 +158,7 @@ public class LOBLine {
 		this.index=ind;
 		this.aggressive=aggr;
 		if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
-			this.spread=ask.subtract(bid);
+			this.spread=(ask.subtract(bid)).setScale(6,RoundingMode.HALF_UP);
 		if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
             this.midpoint=(ask.add(bid)).divide(new BigDecimal(2),3,RoundingMode.HALF_UP);
         if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
@@ -174,7 +174,7 @@ public class LOBLine {
 		this.index=ind;
 		this.aggressive=aggr;
 		if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
-			this.spread=ask.subtract(bid);
+			this.spread=(ask.subtract(bid)).setScale(6,RoundingMode.HALF_UP);
 		if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
             this.midpoint=(ask.add(bid)).divide(new BigDecimal(2),3,RoundingMode.HALF_UP);
         if((bid!=null && ask!=null) && (ask.compareTo(BigDecimal.ZERO)!=0 && bid.compareTo(BigDecimal.ZERO)!=0))
@@ -189,7 +189,7 @@ public class LOBLine {
 		lobLineString+=e.toStringCSV();
 		lobLineString+=bid+";";
 		lobLineString+=ask+";";
-		lobLineString+=formatDisplay(spread,3)+";";
+		lobLineString+=formatDisplay(spread,4)+";";
 		lobLineString+=bidVol+";";
 		lobLineString+=askVol+";";
 		lobLineString+=aggressive+";";
@@ -206,7 +206,7 @@ public class LOBLine {
 		lobLineString+=e.toStringCSV();
 		lobLineString+=bid+";";
 		lobLineString+=ask+";";
-		lobLineString+=formatDisplay(spread,3)+";";
+		lobLineString+=formatDisplay(spread,4);
 		lobLineString+=bidVol+";";
 		lobLineString+=askVol+";";
 		lobLineString+=aggressive+";";
@@ -223,7 +223,7 @@ public class LOBLine {
         lobLineString+=e.toStringCSV();
         lobLineString+=bid+";";
         lobLineString+=ask+";";
-        lobLineString+=formatDisplay(spread,3)+";";
+        lobLineString+=formatDisplay(spread,4)+";";
         lobLineString+=bidVol+";";
         lobLineString+=askVol+";";
         lobLineString+=aggressive+";";
