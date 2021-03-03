@@ -106,7 +106,7 @@ public class AktasSimulator {
 		bt.utils.Parse parser = new bt.utils.Parse(line, ";");
 
         if (line != null) {
-			// System.out.println("line:" + line);
+			 System.out.println("line:" + line);
             String tmp = parser.nextToken();
             while (tmp != null) {
 				// System.out.println(tmp);
@@ -163,15 +163,15 @@ public class AktasSimulator {
                 tmp = parser.nextToken();
                 e.setIlgiliEmirNumarasi(tmp);
                 
-                tmp = parser.nextToken();
-                Date valor1 = null;
-                try {
-                    if(tmp!=null && !tmp.isEmpty())
-                        valor1 = emirDateFormat.parse(tmp);
-                    e.setValor1(valor1);
-                } catch (ParseException e1) {
-                    e1.printStackTrace();
-                }
+//                tmp = parser.nextToken();
+//                Date valor1 = null;
+//                try {
+//                    if(tmp!=null && !tmp.isEmpty())
+//                        valor1 = emirDateFormat.parse(tmp);
+//                    e.setValor1(valor1);
+//                } catch (ParseException e1) {
+//                    e1.printStackTrace();
+//                }
                 
                 tmp = parser.nextToken();
                 Date valor2 = null;
@@ -282,8 +282,11 @@ public class AktasSimulator {
                 t.setMiktar(miktar);
         
                 tmp = parser.nextToken();
-                BigDecimal tlTutar = new BigDecimal(tmp);
-                t.setTlTutar(tlTutar);
+                if(tmp!=null && !tmp.isEmpty() && tmp.compareTo("null")!=0){
+                	BigDecimal tlTutar = new BigDecimal(tmp);
+                    t.setTlTutar(tlTutar);
+                }else
+                    t.setTlTutar(null);
                 
                 tmp = parser.nextToken();
                 int repoFaizi = Integer.parseInt(tmp);
