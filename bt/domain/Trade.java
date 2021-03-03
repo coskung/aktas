@@ -41,6 +41,8 @@ public class Trade {
     BigDecimal enflasyonKatsayisi;
     String kendineFon;
     Boolean isProcessed;
+    BigDecimal hacim;
+    String durum;
     
     public String getIslemNo() {
         return islemNo;
@@ -205,7 +207,21 @@ public class Trade {
     public void setProcessed(Boolean isProcessed) {
         this.isProcessed = isProcessed;
     }
-    public String toStringCSV(){
+    
+    
+    public String getDurum() {
+		return durum;
+	}
+	public void setDurum(String durum) {
+		this.durum = durum;
+	}
+	public BigDecimal getHacim() {
+		return hacim;
+	}
+	public void setHacim(BigDecimal hacim) {
+		this.hacim = hacim;
+	}
+	public String toStringCSV(){
         
         String tradeString="";
         tradeString+=islemNo+";";
@@ -219,7 +235,7 @@ public class Trade {
         tradeString+=fiyat+";";
         tradeString+=checkNull(repo2Fiyati)+";";
         tradeString+=miktar+";";
-        tradeString+=tlTutar+";";
+        tradeString+=checkNull(tlTutar)+";";
         tradeString+=repoFaizi+";";
         tradeString+=stopaj+";";
         tradeString+= dateFormatForFile.format(valor1)+";";

@@ -35,6 +35,9 @@ public class Order {
     BigDecimal tlTutar;
     BigDecimal temizFiyat;
     BigDecimal takasFiyati;
+    BigDecimal kalanHacim;
+    Date sonDegistirmeTarihi;
+    String ilgiliEmir2;
     
     public String getEmirNumarasi() {
         return emirNumarasi;
@@ -173,8 +176,27 @@ public class Order {
     public void setTakasFiyati(BigDecimal takasFiyati) {
         this.takasFiyati = takasFiyati;
     }
+    public BigDecimal getKalanHacim() {
+        return kalanHacim;
+    }
+    public void setKalanHacim(BigDecimal kalanHacim) {
+        this.kalanHacim = kalanHacim;
+    }
     
-    public String toStringCSV(){
+    public Date getSonDegistirmeTarihi() {
+		return sonDegistirmeTarihi;
+	}
+	public void setSonDegistirmeTarihi(Date sonDegistirmeTarihi) {
+		this.sonDegistirmeTarihi = sonDegistirmeTarihi;
+	}
+	
+	public String getIlgiliEmir2() {
+		return ilgiliEmir2;
+	}
+	public void setIlgiliEmir2(String ilgiliEmir2) {
+		this.ilgiliEmir2 = ilgiliEmir2;
+	}
+	public String toStringCSV(){
         String orderString="";
         orderString+=emirNumarasi+";";
         orderString+=dateFormatForFile.format(emirTarihi)+";";
@@ -189,7 +211,7 @@ public class Order {
         orderString+=durum+";";
         orderString+=sonDegistirmeSaati+";";
         orderString+=ilgiliEmirNumarasi+";";
-        orderString+= dateFormatForFile.format(valor1)+";";
+        //orderString+= dateFormatForFile.format(valor1)+";";
         orderString+= isNull(valor2)+";";
         orderString+= getiri+";";
         orderString+= paraBirimi+";";
